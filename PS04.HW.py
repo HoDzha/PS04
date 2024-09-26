@@ -14,7 +14,8 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 #Библиотека, которая позволяет вводить данные на сайт с клавиатуры
 from selenium.webdriver.common.by import By
-def print_paragraphs(page):
+
+def print_paragraphs(browser):
     # Листаем параграфы
     paragraphs = browser.find_elements(By.TAG_NAME, "p")
     # Для перебора пишем цикл
@@ -27,31 +28,31 @@ def print_paragraphs(page):
             choice = input("\nПродолжить чтение? (y/n): ")
             if choice.lower() != 'y':
                 break
+
 def show_links(page):
     # Показываем связанные страницы
 
-def find_wiki(query):
+def find_wiki(browser):
     #функция для поиска в википедии
-    result = browser.find_element(By.ID, query)
+    query = input("Введите запрос для поиска на Википедии: ")
+    search_box = browser.find.element(By.ID, "searchInput")
+    search_box.send_keys(query)  # вводим запрос
+    search_box.send_keys(Keys.ENTER)  # нажимаем Enter
+
 
 def main():
     #главная функция программы
-    query = input("\nВведите запрос для поиска на Википедии: ")
-    page = find_wiki(query)
+    browser = webdriver.Chrome()
+    browser.get("https://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
+    while True:
+        find_wiki(browser) #ищем в википедии
+        paragraph = browser.find_element(By.TAG_NAME, "p")
+        print(f"\n Первый параграф: \n{paragraph.text.strip()}")
 
-browser = webdriver.Chrome()
-browser.get("https://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
+        print_paragraphs(browser)
 
-paragraphs = browser.find_elements(By.TAG_NAME, "p")
-    # Для перебора пишем цикл
-    # for paragraph in paragraphs:
-    #     print(paragraph.text)
-for i, para in enumerate(paragraphs, 1):
-    print(f"\nПараграф {i}:")
-    print(para.text.strip())
-    if i % 2 == 0:  # Показываем по 2 параграфа за раз
-        choice = input("\nПродолжить чтение? (y/n): ")
-        if choice.lower() != 'y':
-            break
+    #
 
-browser.quit()
+
+
+    browser.quit()
