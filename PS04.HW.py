@@ -24,18 +24,19 @@ def print_paragraphs(browser):
     for i, para in enumerate(paragraphs, 1):
         print(f"\nПараграф {i}:")
         print(para.text.strip())
-        if i % 2 == 0:  # Показываем по 2 параграфа за раз
-            choice = input("\nПродолжить чтение? (y/n): ")
-            if choice.lower() != 'y':
-                break
+        #if i % 2 == 0:  # Показываем по 2 параграфа за раз
+        choice = input("\nПродолжить чтение? (y/n): ")
+           if choice.lower() != 'y':
+              break
 
 def show_links(page):
+    results = page.links.keys()
     # Показываем связанные страницы
 
 def find_wiki(browser):
     #функция для поиска в википедии
     query = input("Введите запрос для поиска на Википедии: ")
-    search_box = browser.find.element(By.ID, "searchInput")
+    search_box = browser.find_element(By.ID, "searchInput")
     search_box.send_keys(query)  # вводим запрос
     search_box.send_keys(Keys.ENTER)  # нажимаем Enter
 
@@ -46,6 +47,8 @@ def main():
     browser.get("https://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
     while True:
         find_wiki(browser) #ищем в википедии
+        #предлагаем варианты выбора далнейших действий
+        
         paragraph = browser.find_element(By.TAG_NAME, "p")
         print(f"\n Первый параграф: \n{paragraph.text.strip()}")
 
@@ -53,6 +56,10 @@ def main():
 
     #
 
-
+    time.sleep(10)
 
     browser.quit()
+
+
+if __name__ == "__main__":
+    main()
